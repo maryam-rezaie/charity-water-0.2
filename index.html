@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Water Network Tycoon</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+<body class="bg-light text-dark">
+
+  <audio id="sfx-click" src="sounds/click.mp3"></audio>
+  <audio id="sfx-buy" src="sounds/buy.mp3"></audio>
+  <audio id="sfx-leak" src="sounds/alert.mp3"></audio>
+  <audio id="sfx-win" src="sounds/win.mp3"></audio>
+  <audio id="sfx-milestone" src="sounds/milestone.mp3"></audio>
+
+  <div class="container my-4">
+    <header class="text-center p-4 mb-4 bg-white rounded shadow-sm border-bottom border-warning border-3">
+      <h1 class="fw-bold d-flex align-items-center justify-content-center gap-2 m-0 text-dark">
+        <span class="text-lowercase fw-black text-primary" style="letter-spacing: -2px;">intel</span> 
+        x charity: water
+      </h1>
+      <p class="text-muted small mt-2 mb-3">Raise funds and purchase water infrastructure to save the village!</p>
+      
+      <div class="d-flex justify-content-center align-items-center gap-2">
+        <label for="difficulty-select" class="fw-bold text-secondary small">Difficulty:</label>
+        <select id="difficulty-select" class="form-select form-select-sm w-auto fw-bold text-primary">
+          <option value="easy">Easy (Goal: $2,500)</option>
+          <option value="normal" selected>Normal (Goal: $5,000)</option>
+          <option value="hard">Hard (Goal: $10,000)</option>
+        </select>
+      </div>
+    </header>
+
+    <div id="milestone-alert" class="alert alert-success fw-bold text-center shadow-sm d-none fade-in" role="alert">
+      <i class="fa-solid fa-star me-2 text-warning"></i><span id="milestone-text">Milestone reached!</span>
+    </div>
+
+    <div class="row g-4">
+      
+      <div class="col-md-6 text-center">
+        <div class="p-5 bg-white rounded shadow-sm h-100 d-flex flex-column align-items-center justify-content-center position-relative">
+          
+          <h2 class="h5 fw-bold text-secondary text-uppercase mb-1">Current Water Funds</h2>
+          <div class="display-4 fw-bold mb-4 text-dark">$<span id="current-funds">0.00</span></div>
+          
+          <button id="leak-alert" class="btn btn-danger fw-bold mb-3 d-none leak-animation">
+            <i class="fa-solid fa-triangle-exclamation me-2"></i>Pipe Burst! Losing funds. Click to Fix!
+          </button>
+          
+          <button id="jar-clicker" class="btn p-0 border-0 rounded-circle my-3 position-relative" aria-label="Click to raise water funds">
+            <div class="jar-body d-flex align-items-center justify-content-center text-white shadow">
+              <i class="fa-solid fa-droplet display-1 animate-pulse"></i>
+            </div>
+          </button>
+          
+          <p class="text-muted small mt-3">Click the water jar to raise manual funds</p>
+          <div class="mt-2 text-primary fw-bold small">Passive Income: +$<span id="passive-rate">0.00</span>/s</div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="p-4 bg-white rounded shadow-sm h-100">
+          <h2 class="h4 fw-bold text-dark border-bottom pb-3 mb-3"><i class="fa-solid fa-shop me-2 text-primary"></i>Infrastructure Shop</h2>
+          
+          <div class="d-flex flex-column gap-3">
+            <div class="p-3 border rounded bg-light d-flex align-items-center justify-content-between">
+              <div>
+                <h3 class="h6 fw-bold m-0"><i class="fa-solid fa-chart-line me-2 text-primary"></i>BioSand Filter</h3>
+                <p class="text-muted small m-0">Generates +$1.00/s</p>
+                <span class="badge bg-warning text-dark mt-1">Cost: $<span id="cost-filter">50.00</span></span>
+              </div>
+              <button id="buy-filter" class="btn btn-primary px-3 fw-bold btn-sm">Buy</button>
+            </div>
+
+            <div class="p-3 border rounded bg-light d-flex align-items-center justify-content-between">
+              <div>
+                <h3 class="h6 fw-bold m-0"><i class="fa-solid fa-pump-soap me-2 text-primary"></i>Handpump System</h3>
+                <p class="text-muted small m-0">Generates +$5.00/s</p>
+                <span class="badge bg-warning text-dark mt-1">Cost: $<span id="cost-pump">200.00</span></span>
+              </div>
+              <button id="buy-pump" class="btn btn-primary px-3 fw-bold btn-sm">Buy</button>
+            </div>
+
+            <div class="p-3 border rounded bg-light d-flex align-items-center justify-content-between">
+              <div>
+                <h3 class="h6 fw-bold m-0"><i class="fa-solid fa-bore-hole me-2 text-primary"></i>Deep Well Rig</h3>
+                <p class="text-muted small m-0">Generates +$25.00/s</p>
+                <span class="badge bg-warning text-dark mt-1">Cost: $<span id="cost-well">1000.00</span></span>
+              </div>
+              <button id="buy-well" class="btn btn-primary px-3 fw-bold btn-sm">Buy</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <footer class="mt-4 p-4 bg-dark text-white rounded text-center shadow-sm">
+      <div id="game-ticker" class="small mb-3">
+        <i class="fa-solid fa-circle-info me-2 text-warning"></i><span id="goal-ticker-text">Goal: Reach $5,000.00 to fully secure clean water for the entire village!</span>
+      </div>
+      
+      <button id="reset-game" class="btn btn-outline-light btn-sm fw-bold my-2">
+        <i class="fa-solid fa-arrow-rotate-right me-2"></i>Reset Game
+      </button>
+
+      <hr class="border-secondary my-3">
+      
+      <div class="d-flex flex-column gap-1">
+        <p class="small m-0 text-white-50">
+          Inspired by the global mission of 
+          <a href="https://www.charitywater.org" target="_blank" class="text-info text-decoration-none fw-bold ms-1">
+            charity: water <i class="fa-solid fa-arrow-up-right-from-square small ms-1"></i>
+          </a>
+        </p>
+        <p class="small m-0 text-white-50">
+          Want to make a real-world impact? 
+          <a href="https://www.charitywater.org/donate" target="_blank" class="text-warning text-decoration-none fw-bold ms-1">
+            Donate Here <i class="fa-solid fa-heart small ms-1"></i>
+          </a>
+        </p>
+      </div>
+    </footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
